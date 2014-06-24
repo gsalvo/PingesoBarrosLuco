@@ -231,7 +231,7 @@
                                 </p:tab>
                                 <p:tab title="Tratamiento">
                                 <h:panelGrid width="100%" columns="3" cellpadding="5">
-                                    <p:dataList value="#{medicamentosMb.receta1}" var="rece"  type="ordered">
+                                    <p:dataList value="#{medicamentosMb.receta1}" var="rece" type="ordered" >
                                         <f:facet name="header">
                                             Receta
                                         </f:facet>
@@ -265,6 +265,7 @@
                                         <p:menuitem value="Interconsulta" url="javascript:new_window('views/Interconsulta.xhtml')" />
                                         <p:menuitem value="Contrareferencia" url="javascript:new_window('views/ContraRef.xhtml')" />
                                     </p:splitButton>
+                                    <p:commandButton icon="ui-icon-arrowrefresh-1-w" update=":newConsultationForm"/>
                                 </h:panelGrid>
                             </p:tab>
                             </p:tabView>
