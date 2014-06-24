@@ -775,6 +775,7 @@
 
         <!-- Antecedentes perinatalas - ID: 14 -->
         <p:dialog header="Antecedentes Perinatales" id="perinatalHistory" widgetVar="dialogPerinatalHistory" minimizable="true">
+            <p:growl id="perinatalValidation"/>
             <h:form id="perinatalHistoryForm">
                 <p:tabView>
                     <p:tab title="Antecedentes">  
@@ -1129,7 +1130,7 @@
                     </p:tab>                
                 </p:tabView>
                 <p:panelGrid columns="2" styleClass="panelGridForm">                    
-                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{perinatalHistory.save}"/>
+                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{perinatalHistory.save}" update=":perinatalValidation"/>
                     <p:commandButton value="Cancelar" icon="ui-icon-cancel" onclick="dialogPerinatalHistory.hide()"/>
                 </p:panelGrid>
             </h:form>

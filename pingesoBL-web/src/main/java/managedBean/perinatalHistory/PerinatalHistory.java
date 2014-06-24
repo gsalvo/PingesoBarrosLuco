@@ -16,8 +16,11 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 import sessionbeans.AntecedentesFacadeLocal;
 import sessionbeans.AntmedidosFacadeLocal;
 import sessionbeans.EpisodiosFacadeLocal;
@@ -926,6 +929,9 @@ public class PerinatalHistory {
         }
 
         grupo = 0;
+        FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Antecedentes guardados.", "");
+        FacesContext.getCurrentInstance().addMessage("", fm);
+        RequestContext.getCurrentInstance().execute("dialogPerinatalHistory.hide()");
     }
 
     public String[] getHCTOCheck() {
