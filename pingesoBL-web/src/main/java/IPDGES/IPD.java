@@ -79,11 +79,7 @@ public class IPD extends HttpServlet {
     private String professionalName = "Joel";
     private Integer professionalRut = 17409487;
 
-    
-
-    private List<Patologia> patologias;
-    private String nombrePatologia;
-    private boolean gesPatologia;
+        
 
     Date date = new Date();
     DateFormat dfDateInstance = DateFormat.getDateInstance();
@@ -356,7 +352,6 @@ public class IPD extends HttpServlet {
             table.addCell(cellRow2);
             table.addCell(cellRow1);
             document.add(table);
-            document.add(new Paragraph("\n")); 
             document.close();
         } catch (DocumentException de) {
             throw new IOException(de.getMessage());

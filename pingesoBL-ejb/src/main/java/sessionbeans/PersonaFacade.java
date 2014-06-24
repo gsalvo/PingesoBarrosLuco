@@ -43,5 +43,16 @@ public class PersonaFacade extends AbstractFacade<Persona> implements PersonaFac
         return searchPerson.get(0).getIdPersona();
     }
     
+    @Override
+    public List<Persona> findByRutPerson(Integer rut) {
+        List<Persona> searchPerson;
+        Query query;
+        query = em.createNamedQuery("Persona.findByPersRut").
+                setParameter("persRut", rut);
+        
+        searchPerson = query.getResultList();
+        
+        return searchPerson;
+    }    
     
 }

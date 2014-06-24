@@ -33,4 +33,6 @@ public interface PersonaFacadeLocal {
 
     Integer findByRut(Integer rut);
     
+    List<Persona> findByRutPerson(Integer rut);
+    
 }
