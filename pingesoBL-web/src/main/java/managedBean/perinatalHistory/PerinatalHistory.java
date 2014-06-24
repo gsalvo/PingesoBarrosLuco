@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -46,8 +47,7 @@ public class PerinatalHistory {
     private AntecedentesFacadeLocal antecedentesFacade;
     
     private int grupo = 0;
-    private List<Antmedidos> allAntmedidos;
-
+   
     private int personId;
     private Integer Rut = 6972769;
     private String name;
@@ -111,7 +111,11 @@ public class PerinatalHistory {
 
     String smoker = "";
     int cantCigars = -1;
-
+    
+    private List<Antmedidos> allAntmedidos;
+    private List<Antmedidos> olderAntmedidos;
+    private int maxGroup = 0;
+   
     public void addDeeds(){
         
         deeds = births + abortions;

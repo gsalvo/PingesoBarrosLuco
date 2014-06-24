@@ -7,6 +7,7 @@
 package sessionbeans;
 
 import entities.Antmedidos;
+import entities.Episodios;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -30,5 +31,7 @@ public interface AntmedidosFacadeLocal {
     List<Antmedidos> findRange(int[] range);
 
     int count();
+
+    List<Antmedidos> searchByEpisodioGrupo(Episodios episodio, int grupo);
     
 }
