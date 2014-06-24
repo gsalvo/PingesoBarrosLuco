@@ -45,9 +45,9 @@ public class PerinatalHistory {
     private PersonaFacadeLocal personFacade;
     @EJB
     private AntecedentesFacadeLocal antecedentesFacade;
-    
+
     private int grupo = 0;
-   
+
     private int personId;
     private Integer Rut = 6972769;
     private String name;
@@ -64,30 +64,30 @@ public class PerinatalHistory {
     String[] personalHistory;
     String reasonAbortion = "";
     String[] bornCheck;
-    int deeds = -1;
-    int abortions = -1;
-    int births = -1;
-    int born = -1;
-    int stillbirths = -1;
-    int living = -1;
-    int deadFirstWeek = -1;
-    int deadSecondWeek = -1;
+    int deeds = 0;
+    int abortions = 0;
+    int births = 0;
+    int born = 0;
+    int stillbirths = 0;
+    int living = 0;
+    int deadFirstWeek = 0;
+    int deadSecondWeek = 0;
     DateFormat dfDateInstance = DateFormat.getDateInstance();
     Date lastPregnancy = null;
-    int RNHeavier = -1;
+    int RNHeavier = 0;
 
     //embarazo actual
-    int currentWeight = -1;
-    int usualWeight = -1;
-    int size = -1;
+    int currentWeight = 0;
+    int usualWeight = 0;
+    int size = 0;
     Date FUR = null;
     Date FURO = null;
     String[] estimated;
     String doubts = "";
-    
+
     Date FPBirth = null;
-    int gestationalAge = -1;
-    int numberDays = -1;
+    int gestationalAge = 0;
+    int numberDays = 0;
     String doubtsHEA = "";
     String reason = "";
     String blood = "";
@@ -106,25 +106,51 @@ public class PerinatalHistory {
     String VDRLOption = "";
 
     String[] HCTOCheck;
-    double HTCTOFloat = -0.1;
+    double HTCTOFloat = 0;
     Date HCTODate = null;
 
     String smoker = "";
-    int cantCigars = -1;
-    
+    int cantCigars = 0;
+
     private List<Antmedidos> allAntmedidos;
+    private List<Antmedidos> allAntmedidos2;
     private List<Antmedidos> olderAntmedidos;
     private int maxGroup = 0;
-   
-    public void addDeeds(){
+
+    @PostConstruct
+    public void init(){
+        personId = personFacade.findByRut(Rut);
+        searchPatient = patientFacade.searchByPerson(personId);
+        patient = searchPatient.get(0);
+        searchClinicalRecord = clinicalRecordFacade.searchByPaciente(searchPatient.get(0));
+        searchEpisode = episodeFacade.searchByClinicalRegister(searchClinicalRecord.get(0));
         
+        allAntmedidos2 = antmedidosFacade.findAll();
+        
+        if (allAntmedidos2.isEmpty()) {
+            maxGroup = 0;
+        } else {
+            for (int i = 0; i < allAntmedidos2.size(); i++) {
+                if (maxGroup < allAntmedidos2.get(i).getGrupo()) {
+                    maxGroup = allAntmedidos2.get(i).getGrupo();
+                }
+            }
+        }
+        
+        olderAntmedidos = antmedidosFacade.searchByEpisodioGrupo(searchEpisode.get(0), maxGroup);
+        System.out.println("Elementos mas antiguos: " + olderAntmedidos.size());
+
+    }
+
+    public void addDeeds() {
+
         deeds = births + abortions;
     }
-    
-    public void addBorn(){
+
+    public void addBorn() {
         born = living + deadFirstWeek + deadSecondWeek;
     }
-    
+
     public void save() {
         Date fecha = new Date();
         listAntMedidos.clear();
@@ -164,7 +190,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (deeds > -1) {
+        if (deeds > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Gestas");
@@ -177,7 +203,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (abortions > -1) {
+        if (abortions > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Abortos");
@@ -190,7 +216,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (births > -1) {
+        if (births > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Partos");
@@ -232,7 +258,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (born > -1) {
+        if (born > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Nacidos vivos");
@@ -245,7 +271,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (stillbirths > -1) {
+        if (stillbirths > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Nacidos Muertos");
@@ -258,7 +284,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (living > -1) {
+        if (living > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Vivos");
@@ -271,7 +297,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (deadFirstWeek > -1) {
+        if (deadFirstWeek > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Muertos 1° semana");
@@ -284,7 +310,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (deadSecondWeek > -1) {
+        if (deadSecondWeek > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Muertos 2° a 4° semana");
@@ -311,7 +337,7 @@ public class PerinatalHistory {
             listAntMedidos.add(newAntmedido);
         }
 
-        if (RNHeavier > -1) {
+        if (RNHeavier > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("RN con mayor peso");
@@ -323,8 +349,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (currentWeight > -1) {
+
+        if (currentWeight > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Peso Actual");
@@ -336,8 +362,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (usualWeight > -1) {
+
+        if (usualWeight > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Peso habitual");
@@ -349,8 +375,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (size > -1) {
+
+        if (size > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Talla");
@@ -362,7 +388,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (FUR != null) {
             String dateFOrmat = dfDateInstance.format(FUR);
             newAntmedido = new Antmedidos();
@@ -376,7 +402,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (FURO != null) {
             String dateFOrmat = dfDateInstance.format(FURO);
             newAntmedido = new Antmedidos();
@@ -406,7 +432,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (doubts.equals("")) {
 
         } else {
@@ -421,7 +447,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (FPBirth != null) {
             String dateFOrmat = dfDateInstance.format(FPBirth);
             newAntmedido = new Antmedidos();
@@ -435,8 +461,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (gestationalAge > -1) {
+
+        if (gestationalAge > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Edad Gestación ingreso");
@@ -448,8 +474,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (numberDays > -1) {
+
+        if (numberDays > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("N° de Dias");
@@ -461,22 +487,21 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         /*if (doubtsHEA.equals("")) {
 
-        } else {
-            newAntmedido = new Antmedidos();
+         } else {
+         newAntmedido = new Antmedidos();
 
-            searchAntecedente = antecedentesFacade.searchByName("Motivo");
-            newAntmedido.setIdAntmedidos(null);
-            newAntmedido.setEpisodioid(searchEpisode.get(0));
-            newAntmedido.setIdAntecedente(searchAntecedente.get(0));
-            newAntmedido.setValor(doubtsHEA);
-            newAntmedido.setFecha(fecha);
+         searchAntecedente = antecedentesFacade.searchByName("Motivo");
+         newAntmedido.setIdAntmedidos(null);
+         newAntmedido.setEpisodioid(searchEpisode.get(0));
+         newAntmedido.setIdAntecedente(searchAntecedente.get(0));
+         newAntmedido.setValor(doubtsHEA);
+         newAntmedido.setFecha(fecha);
 
-            listAntMedidos.add(newAntmedido);
-        }*/
-        
+         listAntMedidos.add(newAntmedido);
+         }*/
         if (reason.equals("")) {
 
         } else {
@@ -491,7 +516,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (blood.equals("")) {
 
         } else {
@@ -506,7 +531,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (bloodType.equals("")) {
 
         } else {
@@ -521,7 +546,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (sensitized.equals("")) {
 
         } else {
@@ -536,7 +561,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (examinationCN.equals("")) {
 
         } else {
@@ -551,7 +576,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (examinationMN.equals("")) {
 
         } else {
@@ -566,7 +591,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (examinationON.equals("")) {
 
         } else {
@@ -581,7 +606,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (normalPelvis.equals("")) {
 
         } else {
@@ -596,7 +621,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (normalPapanic.equals("")) {
 
         } else {
@@ -611,7 +636,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (normalCervix.equals("")) {
 
         } else {
@@ -626,7 +651,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (VIH.equals("")) {
 
         } else {
@@ -641,7 +666,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (VDRLOption.equals("")) {
 
         } else {
@@ -656,7 +681,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (VDRL != null) {
             String dateFOrmat = dfDateInstance.format(VDRL);
             newAntmedido = new Antmedidos();
@@ -686,8 +711,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (HTCTOFloat > -0.1) {
+
+        if (HTCTOFloat > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("HCTO valor");
@@ -699,7 +724,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (HCTODate != null) {
             String dateFOrmat = dfDateInstance.format(HCTODate);
             newAntmedido = new Antmedidos();
@@ -713,7 +738,7 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
+
         if (smoker.equals("")) {
 
         } else {
@@ -728,8 +753,8 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        if (cantCigars > -1) {
+
+        if (cantCigars > 0) {
             newAntmedido = new Antmedidos();
 
             searchAntecedente = antecedentesFacade.searchByName("Cigarros por día");
@@ -741,30 +766,27 @@ public class PerinatalHistory {
 
             listAntMedidos.add(newAntmedido);
         }
-        
-        
 
         System.out.println("Personales: " + listAntMedidos.size());
-        
+
         allAntmedidos = antmedidosFacade.findAll();
-        if(allAntmedidos.isEmpty()){
+        if (allAntmedidos.isEmpty()) {
             grupo = 0;
-        }
-        else{
-            for(int i = 0; i < allAntmedidos.size() ; i++){
-                if(grupo < allAntmedidos.get(i).getGrupo()){
-                    grupo = allAntmedidos.get(i).getGrupo(); 
+        } else {
+            for (int i = 0; i < allAntmedidos.size(); i++) {
+                if (grupo < allAntmedidos.get(i).getGrupo()) {
+                    grupo = allAntmedidos.get(i).getGrupo();
                 }
             }
         }
-        
+
         grupo++;
-        
+
         for (int j = 0; j < listAntMedidos.size(); j++) {
             listAntMedidos.get(j).setGrupo(grupo);
             antmedidosFacade.create(listAntMedidos.get(j));
         }
-        
+
         grupo = 0;
     }
 
