@@ -85,7 +85,7 @@
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton icon="ui-icon-plusthick" value="Nueva Consulta" onclick="newConsultationDialog.show()"/>
-                            <p:commandButton icon="ui-icon-search" value="Ver Consulta" actionListener="#{viewConsultation.completeData()}" update=":viewConsultationForm :viewEpisodeValidation" />                               
+                            <p:commandButton icon="ui-icon-search" value="Ver Consulta" actionListener="#{viewConsultation.completeData()}" update=":newConsultationForm :viewConsultationForm :viewEpisodeValidation" />                               
                         </f:facet> 
                     </p:dataTable>
                 </p:panelGrid>
