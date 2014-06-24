@@ -69,7 +69,7 @@
                     <p:dataTable var="consultation"  value="#{viewEpisodes.consultations}" widgetVar="viewConsultationsWV" 
                                  emptyMessage="No se registran consultas" filteredValue="#{viewEpisodes.filterConsultations}"
                                  selectionMode="single" selection="#{viewConsultation.selectedConsultation}" rowKey="#{consultation}" 
-                                 style="width: 400px;" scrollHeight="300" scrollable="true">
+                                 style="width: 550px;" scrollHeight="300" scrollable="true">
                         <f:facet name="header">
                             <h:outputText value="Buscar: " />
                             <p:inputText id="globalFilter" onkeyup="PF('viewConsultationsWV').filter()" style="width:150px"/>
@@ -79,6 +79,9 @@
                         </p:column>
                         <p:column headerText="Motivo de la consulta" filterBy="#{consultation.motivoConsulta}" >
                             <h:outputText value="#{consultation.motivoConsulta}" />
+                        </p:column>
+                        <p:column headerText="Estado" sortBy="#{consultation.pausada ? 'Pausada':'Finalizada'}" >
+                            <h:outputText value="#{consultation.pausada ? 'Pausada':'Finalizada'}" />
                         </p:column>
                         <f:facet name="footer">
                             <p:commandButton icon="ui-icon-plusthick" value="Nueva Consulta" onclick="newConsultationDialog.show()"/>
