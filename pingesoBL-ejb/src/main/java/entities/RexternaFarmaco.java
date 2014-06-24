@@ -7,6 +7,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,9 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -33,6 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "RexternaFarmaco.findByRexternafarmacoid", query = "SELECT r FROM RexternaFarmaco r WHERE r.rexternafarmacoid = :rexternafarmacoid"),
     @NamedQuery(name = "RexternaFarmaco.findByCantidaddespacho", query = "SELECT r FROM RexternaFarmaco r WHERE r.cantidaddespacho = :cantidaddespacho")})
 public class RexternaFarmaco implements Serializable {
+    @OneToMany(mappedBy = "rexternafarmacoid")
+    private Collection<Indicaciones> indicacionesCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -139,6 +144,15 @@ public class RexternaFarmaco implements Serializable {
     @Override
     public String toString() {
         return "entities.RexternaFarmaco[ rexternafarmacoid=" + rexternafarmacoid + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Indicaciones> getIndicacionesCollection() {
+        return indicacionesCollection;
+    }
+
+    public void setIndicacionesCollection(Collection<Indicaciones> indicacionesCollection) {
+        this.indicacionesCollection = indicacionesCollection;
     }
     
 }
