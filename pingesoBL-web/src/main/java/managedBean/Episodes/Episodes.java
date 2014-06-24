@@ -42,17 +42,32 @@ public class Episodes {
     private List<Paciente> searchPatient;
     private List<RegistroClinico> searchClinicalRecord;
     private List<Episodios> searchEpisode;
-    
-    private String rut;
-    private Integer Rut = 6972769;
+    private Integer rut;
     private String name;    
     private int episode = 0;
     private Map<String,String> episodes = new HashMap<String,String>();
     
     @PostConstruct
     public void init(){
-        rut = "69727697";
-        personId = personFacade.findByRut(Rut);
+        rut = 6972769;
+        personId = personFacade.findByRut(rut);
+        searchPatient = patientFacade.searchByPerson(personId);
+        searchClinicalRecord = clinicalRecordFacade.searchByPaciente(searchPatient.get(0));
+        searchEpisode = episodesFacade.searchByClinicalRegister(searchClinicalRecord.get(0));
+        name = searchPatient.get(0).getPersona().getPersNombres() +" "+searchPatient.get(0).getPersona().getPersApepaterno() 
+                +" "+searchPatient.get(0).getPersona().getPersApematerno();
+        
+        episodes = new HashMap<String,String>();
+        episodes.put("Seleccione", "0");
+        for(int i= 0; i<searchEpisode.size(); i++){
+            String aux = searchEpisode.get(i).getEpisodioid().toString();
+            episodes.put(aux, aux);
+        }
+    }
+    
+    public void startEpisodes(Integer rutPaciente){
+        rut = rutPaciente;
+        personId = personFacade.findByRut(rut);
         searchPatient = patientFacade.searchByPerson(personId);
         searchClinicalRecord = clinicalRecordFacade.searchByPaciente(searchPatient.get(0));
         searchEpisode = episodesFacade.searchByClinicalRegister(searchClinicalRecord.get(0));
@@ -77,12 +92,6 @@ public class Episodes {
     public void setEpisodes(Map<String, String> episodes) {
         this.episodes = episodes;
     }
-    public String getRut() {
-        return rut;
-    }
-    public void setRut(String rut) {
-        this.rut = rut;
-    }
     public String getName() {
         return name;
     }
@@ -94,6 +103,14 @@ public class Episodes {
     }
     public void setEpisode(int episode) {
         this.episode = episode;
+    }
+
+    public Integer getRut() {
+        return rut;
+    }
+
+    public void setRut(Integer Rut) {
+        this.rut = Rut;
     }
     
     

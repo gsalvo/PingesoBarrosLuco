@@ -39,7 +39,6 @@ public class viewVitalSigns {
     private List<Paciente> searchPaciente;
     private List<Muesta> searchSamples;
     private Integer PersonId;
-    private String PersonRut = "69727697";
     private Integer Rut = 6972769;
     private Integer personID;
     private int samplesId;
@@ -48,27 +47,14 @@ public class viewVitalSigns {
 
     @PostConstruct
     public void init() {
+    }
+    
+    public void start(Integer rut){
+        this.Rut = rut;
         PersonId = personFacade.findByRut(Rut);
         searchPaciente = patientFacade.searchByPerson(PersonId);
-        //Date fecha = new Date(1990, 17, 9);
         boolean exist = false;
         int maxGroup = 0;
-        /*for (Muesta searchSample : searchSamples) {
-         for (Integer group : groups) {
-         if (group == searchSample.getGrupo()) {
-         exist = true;
-         }
-         }
-         if (exist == false) {
-         groups.add(searchSample.getGrupo());
-         String dateAux = searchSample.getFecha().toString();
-         dateGroup.add(new DateGroup(searchSample.getGrupo(), dateAux));
-         }
-         exist = false;
-         maxGroup = searchSample.getGrupo();
-         }
-         searchSamples = muestaFacade.searchByPatientGroup(searchPaciente.get(0), maxGroup);*/
-
         searchSamples = muestaFacade.searchByPatient(searchPaciente.get(0));
         for (Muesta searchSample : searchSamples) {
             for (Integer group : groups) {

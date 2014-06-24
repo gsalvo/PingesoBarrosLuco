@@ -47,7 +47,7 @@ public class GeneralHistory {
     @EJB
     private PersonaFacadeLocal personFacade;
     
-    private Integer Rut = 6972769;
+    private Integer rut;
     private String antecedentes;
     private Antmedidos newAntmedido;
     private List<Antecedentes> searchAntecedente;
@@ -61,10 +61,14 @@ public class GeneralHistory {
         
     }
     
+    public void start(Integer rut){
+        this.rut = rut;
+    }
+    
     public void save(){
         if(!antecedentes.isEmpty()){
             Date fecha = new Date();
-            personId = personFacade.findByRut(Rut);
+            personId = personFacade.findByRut(rut);
             searchPatient = patientFacade.searchByPerson(personId);
             patient = searchPatient.get(0);
             searchClinicalRecord = clinicalRecordFacade.searchByPaciente(searchPatient.get(0));

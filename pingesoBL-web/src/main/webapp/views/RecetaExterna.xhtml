@@ -128,9 +128,9 @@
                                         <p:panelGrid columns="2" style="width: 100%;text-align: center">
                                             <f:facet name="header">Datos Doctor</f:facet>
                                             <h:outputLabel value="R.U.N doctor: "/>
-                                            <p:outputLabel id="runDoc" value="1231123"/>
+                                            <p:outputLabel id="runDoc" value="#{loginSessionMB.rut}"/>
                                             <h:outputLabel  value="Nombre doctor: "/>
-                                            <p:outputLabel id="nombreDoc" value="aaaaaaaaaaaaaaa"/>
+                                            <p:outputLabel id="nombreDoc" value="#{loginSessionMB.nombre}"/>
                                         </p:panelGrid>
                                     </p:panelGrid>
                                     <br/>
@@ -160,7 +160,7 @@
 
                             <div class="noPrintBlock">
                                 <p:growl id="message" showDetail="true" life="2000"/>
-                                <p:commandButton  update="message"  value="Guardar" icon="ui-icon-check"/>
+                                <p:commandButton action="#{recetaexternaMb.guardarRecetaExterna()}" update="message"  value="Guardar" icon="ui-icon-check"/>
                                 <p:commandButton type="button" onclick="popup.show()" value="Imprimir" icon="ui-icon-print"  />
                                 
                                 <p:dialog widgetVar="popup" header="Autenticacion" showEffect="fade" hideEffect="explode" >

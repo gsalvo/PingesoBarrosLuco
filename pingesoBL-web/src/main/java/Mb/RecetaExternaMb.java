@@ -5,6 +5,11 @@
  */
 package Mb;
 
+import entities.Consulta;
+import entities.Dosis;
+import entities.Externa;
+import entities.Farmaco;
+import entities.FormaFarmaceutica;
 import entities.RegistroClinico;
 import entities.Paciente;
 import entities.Prescription;
@@ -36,7 +41,9 @@ import session.PrevisionFacadeLocal;
 //import session.ProfessionalsFacadeLocal;
 import org.primefaces.event.CloseEvent;
 import session.PrescriptionFacadeLocal;
+import session.RecetaExternaFacadeLocal;
 import session.RecetaInternaFacadeLocal;
+import sessionbeans.ConsultaFacadeLocal;
 
 /**
  *
@@ -46,6 +53,10 @@ import session.RecetaInternaFacadeLocal;
 @RequestScoped
 
 public class RecetaExternaMb {
+    @EJB
+    private RecetaExternaFacadeLocal recetaExternaFacade;
+    @EJB
+    private ConsultaFacadeLocal consultaFacade;
 
     @EJB
     private RecetaInternaFacadeLocal recetaInternaFacade;
@@ -55,6 +66,10 @@ public class RecetaExternaMb {
 
     @Inject
     LoginSessionMB session;
+    
+    @Inject
+    MedicamentosMb medicamentos;
+    
     @EJB
     private FormaFarmaceuticaFacadeLocal formaFarmaceuticaFacade;
     @EJB
@@ -220,6 +235,14 @@ public class RecetaExternaMb {
     public String getNombreDoc() {
 
         return nombreDoc;
+    }
+
+    public MedicamentosMb getMedicamentos() {
+        return medicamentos;
+    }
+
+    public void setMedicamentos(MedicamentosMb medicamentos) {
+        this.medicamentos = medicamentos;
     }
 
     public void setNombreDoc(String nombreDoc) {
@@ -388,6 +411,35 @@ public class RecetaExternaMb {
 
         }
 
+    }
+    public void guardarRecetaExterna() {
+             Prescription receta = new Prescription();
+             List<Prescription> recetas = new ArrayList<Prescription>();
+             Consulta consulte = new Consulta();
+             consulte = consultaFacade.find(2);
+             Externa recetaExterna = new Externa();
+             List<Farmaco> remedios = new ArrayList<Farmaco>();
+             Farmaco remedio = new Farmaco();
+             FormaFarmaceutica forma = new FormaFarmaceutica();
+             List<FormaFarmaceutica> formas = new ArrayList<FormaFarmaceutica>();
+             Dosis laDosis = new Dosis();
+             receta.setConsultaid(consulte);
+             receta.setDescription(text);
+             java.util.Date fechaActual = new java.util.Date();//fecha actual
+             receta.setPrescriptionDay(fechaActual);
+             prescriptionFacade.create(receta);
+             recetas = prescriptionFacade.findAll();
+             System.out.println("-----------> GUARDAR receta");
+             //guarda en receta interna
+             receta = recetas.get(recetas.size() - 1);//toma el ultimo valor guardado
+             System.out.println("recetaaaaaaa=" + receta.getPrescriptionid());
+             recetaExterna.setPrescriptionid(receta.getPrescriptionid());
+             
+             recetaExternaFacade.create(recetaExterna);
+             System.out.println("-----------> GUARDAR receta externa");
+             //guarda en recetaexternafarmaco
+             medicamentos.recetae.add("Receta Externa");
+           
     }
 
     public void validacion() throws IOException {

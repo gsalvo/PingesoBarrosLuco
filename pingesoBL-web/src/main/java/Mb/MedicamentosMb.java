@@ -5,6 +5,7 @@
  */
 package Mb;
 
+import entities.Consulta;
 import entities.RegistroClinico;
 import entities.Dosis;
 import entities.DosisFf;
@@ -13,7 +14,7 @@ import entities.FfFarmaco;
 import entities.FormaFarmaceutica;
 import entities.Prescription;
 import entities.Profesional;
-import entities.Externa;
+import entities.*;
 import entities.RexternaFarmaco;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +38,12 @@ import session.FormaFarmaceuticaFacadeLocal;
 import session.PrescriptionFacadeLocal;
 //import session.ProfessionalsFacadeLocal;
 import session.RecetaExternaFacadeLocal;
+import session.RecetaInternaFacadeLocal;
 import session.RexternaFarmacoFacadeLocal;
+import sessionbeans.ConsultaFacadeLocal;
+import sessionbeans.PersonaFacadeLocal;
+import sess.*;
+
 
 /**
  *
@@ -46,6 +52,21 @@ import session.RexternaFarmacoFacadeLocal;
 @ManagedBean
 @SessionScoped
 public class MedicamentosMb {
+    @EJB
+    private RecetaInternaFacadeLocal recetaInternaFacade;
+    @EJB
+    private ConsultaFacadeLocal consultaFacade;
+    @EJB
+    private PersonaFacadeLocal personaFacade;
+    @EJB
+    private RegistroClinicoFacadeLocal registroClinicoFacade;
+    @EJB
+    private ExamenFacadeLocal examenFacade;
+    @EJB
+    private SolicitudexamenFacadeLocal solicitudexamenFacade;
+    @EJB
+    private SolexexFacadeLocal solexexFacade;
+    
 
     @Inject
     LoginSessionMB session;
@@ -161,30 +182,142 @@ public class MedicamentosMb {
     }
     public void guardarElectro(){
         examen.add("Electrocardiograma");
+        List<Solicitudexamen> sol = new ArrayList<Solicitudexamen>();
+         System.out.println("guaaaadar examen electro");
+        Solicitudexamen solicitud = new Solicitudexamen();
+        Consulta consulte = new Consulta();
+        consulte=consultaFacade.find(2);
+        Examen ex = new Examen();
+        ex=examenFacade.find(4);
+        solicitud.setConsultaid(consulte);
+        java.util.Date fechaActual = new java.util.Date();//fecha actual
+        solicitud.setFecha(fechaActual);
+        solicitudexamenFacade.create(solicitud);
+        
+        sol=solicitudexamenFacade.findAll();
+        solicitud=sol.get(sol.size()-1);
+        Solexex solex = new Solexex();
+        solex.setExamenid(ex);
+        solex.setSolicitudeid(solicitud);
+        solexexFacade.create(solex);
     }
     public void guardarElisa(){
         examen.add("Elisa");
     }
     public void guardarGlicemia(){
         examen.add("Glicemia");
+         List<Solicitudexamen> sol = new ArrayList<Solicitudexamen>();
+         System.out.println("guaaaadar examen glicemia");
+        Solicitudexamen solicitud = new Solicitudexamen();
+        Consulta consulte = new Consulta();
+        consulte=consultaFacade.find(2);
+        Examen ex = new Examen();
+        ex=examenFacade.find(2);
+        solicitud.setConsultaid(consulte);
+        java.util.Date fechaActual = new java.util.Date();//fecha actual
+        solicitud.setFecha(fechaActual);
+        solicitudexamenFacade.create(solicitud);
+        
+        sol=solicitudexamenFacade.findAll();
+        solicitud=sol.get(sol.size()-1);
+        Solexex solex = new Solexex();
+        solex.setExamenid(ex);
+        solex.setSolicitudeid(solicitud);
+        solexexFacade.create(solex);
+        
     }
     public void guardarLaboratorio(){
         examen.add("Laboratorio");
+        List<Solicitudexamen> sol = new ArrayList<Solicitudexamen>();
+         System.out.println("guaaaadar examen labo");
+        Solicitudexamen solicitud = new Solicitudexamen();
+        Consulta consulte = new Consulta();
+        consulte=consultaFacade.find(2);
+        Examen ex = new Examen();
+        ex=examenFacade.find(5);
+        solicitud.setConsultaid(consulte);
+        java.util.Date fechaActual = new java.util.Date();//fecha actual
+        solicitud.setFecha(fechaActual);
+        solicitudexamenFacade.create(solicitud);
+        
+        sol=solicitudexamenFacade.findAll();
+        solicitud=sol.get(sol.size()-1);
+        Solexex solex = new Solexex();
+        solex.setExamenid(ex);
+        solex.setSolicitudeid(solicitud);
+        solexexFacade.create(solex);
     }
     public void guardarMicro(){
         examen.add("Microbiologico");
+        List<Solicitudexamen> sol = new ArrayList<Solicitudexamen>();
+         System.out.println("guaaaadar examen micro");
+        Solicitudexamen solicitud = new Solicitudexamen();
+        Consulta consulte = new Consulta();
+        consulte=consultaFacade.find(2);
+        Examen ex = new Examen();
+        ex=examenFacade.find(6);
+        solicitud.setConsultaid(consulte);
+        java.util.Date fechaActual = new java.util.Date();//fecha actual
+        solicitud.setFecha(fechaActual);
+        solicitudexamenFacade.create(solicitud);
+        
+        sol=solicitudexamenFacade.findAll();
+        solicitud=sol.get(sol.size()-1);
+        Solexex solex = new Solexex();
+        solex.setExamenid(ex);
+        solex.setSolicitudeid(solicitud);
+        solexexFacade.create(solex);
     }
     public void guardarRadiologico(){
         examen.add("Radiologico");
+        List<Solicitudexamen> sol = new ArrayList<Solicitudexamen>();
+         System.out.println("guaaaadar examen radio");
+        Solicitudexamen solicitud = new Solicitudexamen();
+        Consulta consulte = new Consulta();
+        consulte=consultaFacade.find(2);
+        Examen ex = new Examen();
+        ex=examenFacade.find(3);
+        solicitud.setConsultaid(consulte);
+        java.util.Date fechaActual = new java.util.Date();//fecha actual
+        solicitud.setFecha(fechaActual);
+        solicitudexamenFacade.create(solicitud);
+        
+        sol=solicitudexamenFacade.findAll();
+        solicitud=sol.get(sol.size()-1);
+        Solexex solex = new Solexex();
+        solex.setExamenid(ex);
+        solex.setSolicitudeid(solicitud);
+        solexexFacade.create(solex);
     }
     public void guardarTns(){
         examen.add("TNS");
+        List<Solicitudexamen> sol = new ArrayList<Solicitudexamen>();
+         System.out.println("guaaaadar examen tns");
+        Solicitudexamen solicitud = new Solicitudexamen();
+        Consulta consulte = new Consulta();
+        consulte=consultaFacade.find(2);
+        Examen ex = new Examen();
+        ex=examenFacade.find(1);
+        solicitud.setConsultaid(consulte);
+        java.util.Date fechaActual = new java.util.Date();//fecha actual
+        solicitud.setFecha(fechaActual);
+        solicitudexamenFacade.create(solicitud);
+        
+        sol=solicitudexamenFacade.findAll();
+        solicitud=sol.get(sol.size()-1);
+        Solexex solex = new Solexex();
+        solex.setExamenid(ex);
+        solex.setSolicitudeid(solicitud);
+        solexexFacade.create(solex);
     }
     public void guardarContraRef(){
         otros.add("Contrarreferencia");
     }
     public void guardarRecetaExterna(){
         recetae.add("Receta Externa");
+    }
+    public void guardarInter(){
+        otros.add("Interconsulta");
     }
     
     /* EL "BUSCA" NO SE OBTIENE POR EL MOMENTO*/
@@ -213,23 +346,24 @@ public class MedicamentosMb {
        
 
         if (validacion == 1) {
-            /* System.out.println("Guardar");
+             System.out.println("Guardar");
              Prescription receta = new Prescription();
              List<Prescription> recetas = new ArrayList<Prescription>();
-             Professionals doctor = new Professionals();
-             Clinicalrecords clin = new Clinicalrecords();
-             RecetaExterna recetaInterna = new RecetaExterna();
+             Consulta consulte = new Consulta();
+             Persona doctor = new Persona(); // guarda en la tabla persona
+             RegistroClinico clin = new RegistroClinico();
+             Interna recetaInterna = new Interna();
              List<Farmaco> remedios = new ArrayList<Farmaco>();
              Farmaco remedio = new Farmaco();
              FormaFarmaceutica forma = new FormaFarmaceutica();
              List<FormaFarmaceutica> formas = new ArrayList<FormaFarmaceutica>();
              Dosis laDosis = new Dosis();
-             clin = clinicalrecordsFacade.find(session.getFicha());
-             doctor = professionalsFacade.find(session.getRut());
+             clin = registroClinicoFacade.find(1);
+             doctor = personaFacade.find(17409087);
              System.out.println(session.getFicha());
-             receta.setDescription("descripcion3");
-             receta.setRut(doctor);
-             receta.setCrecid(clin);
+             consulte = consultaFacade.find(1);//HAY QUE CAMBIAR ESTO
+             receta.setConsultaid(consulte);
+             receta.setDescription("Descripcion");
              java.util.Date fechaActual = new java.util.Date();//fecha actual
              receta.setPrescriptionDay(fechaActual);
              prescriptionFacade.create(receta);
@@ -238,12 +372,9 @@ public class MedicamentosMb {
              //guarda en receta interna
              receta = recetas.get(recetas.size() - 1);//toma el ultimo valor guardado
              System.out.println("recetaaaaaaa=" + receta.getPrescriptionid());
-             recetaInterna.setCrecid(session.getFicha());
              recetaInterna.setPrescriptionid(receta.getPrescriptionid());
-             recetaInterna.setDescription("description");
-             recetaInterna.setPrescriptionDay(fechaActual);
-             recetaInterna.setPeriodoDeTraamiento(Integer.parseInt(recetaa.get(0).getPeriodo()));
-             recetaExternaFacade.create(recetaInterna);
+             recetaInterna.setPeriodoDeTraamiento(2);
+             recetaInternaFacade.create(recetaInterna);
              System.out.println("-----------> GUARDAR receta externa");
              //guarda en recetaexternafarmaco
              RexternaFarmaco rexF = new RexternaFarmaco();
@@ -261,7 +392,7 @@ public class MedicamentosMb {
              rexternaFarmacoFacade.create(rexF);
              System.out.println("-----------> GUARDAR receta farmaco");
 
-             }*/
+             }
             receta1 = new ArrayList<String>();
             System.out.println("saludines");
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successful", "Datos Guardados"));

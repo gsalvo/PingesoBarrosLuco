@@ -73,40 +73,40 @@
                                     <f:facet name="header">Datos Paciente</f:facet>
 
                                     <h:outputLabel  value="Nombre: "/>
-                                    <p:outputLabel value="#{pacienteMb.nombrePac}"/>
+                                    <p:outputLabel value="#{newConsultation.name}"/>
 
                                     <h:outputLabel  value="Sexo: "/>
-                                    <p:outputLabel  id="sexo" value=""/>
+                                    <p:outputLabel  id="sexo" value="M"/>
 
                                     <h:outputLabel  value="R.U.N: "/>
-                                    <p:outputLabel  id="run" value="#{pacienteMb.txt}"/>
+                                    <p:outputLabel  id="run" value="#{newConsultation.rut}"/>
 
 
                                     <h:outputLabel  value="Edad: "/>
-                                    <p:outputLabel id="edad" value="#{pacienteMb.edad}"/>
+                                    <p:outputLabel id="edad" value="20"/>
 
                                     <h:outputLabel value="Dirección: "/>
-                                    <p:outputLabel id="direccion" value="#{pacienteMb.domicilio}"/>
+                                    <p:outputLabel id="direccion" value="calle 13"/>
 
                                     <h:outputLabel  value="Procedencia: "/>
-                                    <p:outputLabel id="procedencia" value=""/>
+                                    <p:outputLabel id="procedencia" value="chile"/>
 
                                     <h:outputLabel  value="Prevision: "/>
-                                    <p:outputLabel id="prevision" value="#{pacienteMb.prevision}"/>
+                                    <p:outputLabel id="prevision" value="Fonasa"/>
 
 
                                     <h:outputLabel  value="Cama: "/>
-                                    <p:outputLabel id="cama" value=""/>
+                                    <p:outputLabel id="cama" value="2"/>
 
 
                                     <h:outputLabel  value="Diagnóstico: "/>
-                                    <p:outputLabel id="diag" value=""/>
+                                    <p:outputLabel id="diag" value="-"/>
 
                                     <h:outputLabel  value="Sala: "/>
-                                    <p:outputLabel id="sala" value=""/>
+                                    <p:outputLabel id="sala" value="13"/>
 
                                     <h:outputLabel  value="Fecha: "/>
-                                    <p:outputLabel id="fecha" value="#{pacienteMb.fecha}"/>
+                                    <p:outputLabel id="fecha" value="12-12-2014"/>
 
 
                                 </p:panelGrid>
@@ -223,36 +223,36 @@
                                         <h4 align="center">Servicio de Salud Metropolitano Sur</h4>
                                         <h:panelGrid columns="4" style="width: 100%">
                                             <h:outputLabel  value="Nombre: "/>
-                                            <p:outputLabel value="#{pacienteMb.nombrePac}" />
+                                            <p:outputLabel value="#{newConsultation.name}" />
                                             <h:outputLabel  value="R.U.N: "/>
-                                            <p:outputLabel  id="run" value="#{pacienteMb.txt}"/>
+                                            <p:outputLabel  id="run" value="#{newConsultation.rut}"/>
 
                                             <h:outputLabel  value="Sexo: "/>
-                                            <p:outputLabel  id="sexo" value=""/>
+                                            <p:outputLabel  id="sexo" value="M"/>
 
                                             <h:outputLabel  value="Edad: "/>
-                                            <p:outputLabel id="edad" value="#{pacienteMb.edad}"/>
+                                            <p:outputLabel id="edad" value="20"/>
 
                                             <h:outputLabel value="Dirección: "/>
-                                            <p:outputLabel id="direccion" value="#{pacienteMb.domicilio}"/>
+                                            <p:outputLabel id="direccion" value="calle 13"/>
 
                                             <h:outputLabel  value="Procedencia: "/>
-                                            <p:outputLabel id="procedencia" value=""/>
+                                            <p:outputLabel id="procedencia" value="chile"/>
 
                                             <h:outputLabel  value="Sala: "/>
-                                            <p:outputLabel id="sala" value=""/>
+                                            <p:outputLabel id="sala" value="2"/>
 
                                             <h:outputLabel  value="Cama: "/>
-                                            <p:outputLabel id="cama" value=""/>
+                                            <p:outputLabel id="cama" value="13"/>
 
                                             <h:outputLabel  value="Fecha: "/>
-                                            <p:outputLabel id="fecha" value="#{pacienteMb.fecha}"/>
+                                            <p:outputLabel id="fecha" value="12-12-2014"/>
 
                                             <h:outputLabel  value="Diagnóstico: "/>
-                                            <p:outputLabel id="diag" value=""/>
+                                            <p:outputLabel id="diag" value="-"/>
 
                                             <h:outputLabel  value="Prevision: "/>
-                                            <p:outputLabel id="prevision" value="#{pacienteMb.prevision}"/>  
+                                            <p:outputLabel id="prevision" value="Fonasa"/>  
                                         </h:panelGrid>
                                         <c:if test="#{dialogView.mostrarBio()}">
                                             <p:dataList value="#{dialogView.selectedBio}" var="exam" >
