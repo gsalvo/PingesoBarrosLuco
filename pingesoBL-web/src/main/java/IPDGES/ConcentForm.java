@@ -14,38 +14,65 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
+import entities.Consulta;
+import entities.Episodios;
+import entities.IpdGes;
+import entities.Persona;
+import entities.RegistroClinico;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sessionbeans.ConsultaFacadeLocal;
+import sessionbeans.EpisodiosFacadeLocal;
+import sessionbeans.IpdGesFacadeLocal;
+import sessionbeans.PersonaFacadeLocal;
+import sessionbeans.RegistroClinicoFacadeLocal;
 
 /**
  *
  * @author Gustavo Salvo Lara
  */
 public class ConcentForm extends HttpServlet {
-    
+
+    @EJB
+    private ConsultaFacadeLocal consultaFacade;
+    @EJB
+    private IpdGesFacadeLocal ipdGESFacade;
+    @EJB
+    private EpisodiosFacadeLocal episodioFacade;
+    @EJB
+    private RegistroClinicoFacadeLocal registroFacade;
+    @EJB
+    private PersonaFacadeLocal personaFacade;
+
     private String institution = "Hospital Barros Luco";
-    private String address = "Calle tanto numero tanto";
+    private String address = "José Miguel Carrera 3604, San Miguel";
     private String city = "Santiago";
-    private String personName = "Nombre de la persona que notifica";
-    private Integer rut = 17409487;
-    
-    private String patientName = "Bernarda";
-    private Integer patientRut = 6972769;
-    private String patientFonasa = "Fonasa del paciente";
-    private String patientIsapre = "Isapre del paciente";
-    private String home = "Casa tanto bla bla";
-    private String commune = "La florida";
-    private String region = "Metropolitana";
-    private String phoneNumber = "2972493";
-    private String celularNumber = "86652272";
-    private String mail = "proyectista@hotmail.com";
-    
-    private String ges = "true";
-    
+    private String personName = "";
+    private Integer rut;
+
+    private String patientName = "";
+    private Integer patientRut = 0;
+    private String patientFonasa = "";
+    private String patientIsapre = "";
+    private String home = "";
+    private String commune = "";
+    private String region = "";
+    private String phoneNumber = "";
+    private String celularNumber = "";
+    private String mail = "";
+    Date aux = new Date();
+    DateFormat dfDefault = DateFormat.getInstance();
+    private String dateHour=dfDefault.format(aux);
+    private String ges = "";
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -60,7 +87,27 @@ public class ConcentForm extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/pdf");
-
+        String rut = request.getParameter("rut");
+        Integer search = Integer.parseInt(rut);
+        List<Persona> person = personaFacade.findByRutPerson(search);
+        Persona personSelected;
+        
+        if(person.size()>0){
+            System.out.println("La cantidad es:" + person.size());
+            personSelected = person.get(0);
+            System.out.println("La cantidad es:" + personSelected.getPersNombres());
+            
+            patientName = personSelected.getPersNombres() + " "+ personSelected.getPersApepaterno() + " " + personSelected.getPersApematerno();
+            patientRut = search;
+            patientFonasa =  "";
+            patientIsapre = personSelected.getPaciente().getPaciOtraprevision();
+            home = personSelected.getPersDireccion();
+            commune = "";
+            region = "";
+            phoneNumber = personSelected.getPersTelefono();
+            celularNumber = personSelected.getPersCelular();
+            mail = personSelected.getPersEmail();
+        }
         try {
             //style
             Font typeBold = new Font(Font.FontFamily.TIMES_ROMAN, 12, 1);
@@ -99,7 +146,7 @@ public class ConcentForm extends HttpServlet {
             table.addCell(cellRow1);
             document.add(table);
             document.add(new Paragraph("\n"));
-            
+
             //row: 2
             table = new PdfPTable(2);
             table.setWidthPercentage(100);
@@ -130,7 +177,7 @@ public class ConcentForm extends HttpServlet {
             table.addCell(cellRow1);
             table.addCell(cellRow2);
             p1 = new Paragraph(space, "NOMBRE PERSONA QUE NOTIFICA: " + personName, type);
-            p2 = new Paragraph(space, "RUT: " + rut, type);
+            p2 = new Paragraph(space, "RUT: ", type);
             cellRow1 = new PdfPCell(p1);
             cellRow2 = new PdfPCell(p2);
             formatCellBorder(cellRow1, 20);
@@ -180,7 +227,7 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             cellRow1.setBorderWidthLeft(1);
-            cellRow2.setBorderWidthRight(1);            
+            cellRow2.setBorderWidthRight(1);
             table.addCell(cellRow1);
             table.addCell(cellRow2);
             p1 = new Paragraph(space, "COMUNA: " + commune, type);
@@ -190,7 +237,7 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             cellRow1.setBorderWidthLeft(1);
-            cellRow2.setBorderWidthRight(1);            
+            cellRow2.setBorderWidthRight(1);
             table.addCell(cellRow1);
             table.addCell(cellRow2);
             p1 = new Paragraph(space, "N° TELÉFONO FIJO: " + phoneNumber, type);
@@ -200,7 +247,7 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             cellRow1.setBorderWidthLeft(1);
-            cellRow2.setBorderWidthRight(1);            
+            cellRow2.setBorderWidthRight(1);
             table.addCell(cellRow1);
             table.addCell(cellRow2);
             p1 = new Paragraph(space, "DIRECCIÓN CORREO ELECTRÓNICO (E-MAIL): " + mail, type);
@@ -210,11 +257,11 @@ public class ConcentForm extends HttpServlet {
             cellRow1.setBorderWidthLeft(1);
             cellRow1.setBorderWidthRight(1);
             cellRow1.setBorderWidthBottom(1);
-            
+
             table.addCell(cellRow1);
             document.add(table);
             document.add(new Paragraph("\n"));
-            
+
             //row 4
             table = new PdfPTable(2);
             table.setWidthPercentage(100);
@@ -240,7 +287,7 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             cellRow1.setBorderWidthLeft(1);
             cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);            
+            table.addCell(cellRow1);
             p1 = new Paragraph(space, "(  ) Confirmación Diagnóstica", type);
             p2 = new Paragraph(space, "(  ) Paciente en Tratamiento", type);
             cellRow1 = new PdfPCell(p1);
@@ -252,7 +299,7 @@ public class ConcentForm extends HttpServlet {
             cellRow1.setBorderWidthBottom(1);
             cellRow2.setBorderWidthBottom(1);
             table.addCell(cellRow1);
-            table.addCell(cellRow2);            
+            table.addCell(cellRow2);
             document.add(table);
             //row 5
             document.add(new Paragraph(space, "CONSTANCIA", subTitle));
@@ -260,10 +307,10 @@ public class ConcentForm extends HttpServlet {
             text1.setAlignment(Element.ALIGN_JUSTIFIED);
             document.add(text1);
             document.add(new Paragraph(space, "IMPORTANTE", subTitle));
-            Paragraph text2 = new Paragraph(space,"Tenga presente que sí no se cumplen las garantías usted puede reclamar ante Fonasa o la Isapre, según corresponda. Si la respuesta no es satisfactoria, usted puede recurrir en segunda instancia a la Superintendencia de Salud.", type);
+            Paragraph text2 = new Paragraph(space, "Tenga presente que sí no se cumplen las garantías usted puede reclamar ante Fonasa o la Isapre, según corresponda. Si la respuesta no es satisfactoria, usted puede recurrir en segunda instancia a la Superintendencia de Salud.", type);
             text2.setAlignment(Element.ALIGN_JUSTIFIED);
-            document.add(text2);            
-            document.add(new Paragraph(space, "FECHA Y HORA DE NOTIFICACIÓN: " +"-" , subTitle));
+            document.add(text2);
+            document.add(new Paragraph(space, "FECHA Y HORA DE NOTIFICACIÓN: " + dateHour, subTitle));
             document.add(new Paragraph(space, "\n", type));
             document.add(new Paragraph(space, "\n", type));
             document.add(new Paragraph(space, "\n", type));
@@ -277,7 +324,7 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             table.addCell(cellRow1);
-            table.addCell(cellRow2);            
+            table.addCell(cellRow2);
             p1 = new Paragraph(space, "(Firma de persona que notifica)", subTitle2);
             p2 = new Paragraph(space, "(Firma o huella digital ó representante)", subTitle2);
             cellRow1 = new PdfPCell(p1);
@@ -285,11 +332,11 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             table.addCell(cellRow1);
-            table.addCell(cellRow2); 
-            document.add(table);            
+            table.addCell(cellRow2);
+            document.add(table);
             //row 7
             document.add(new Paragraph(space, "En caso que la persona que tomó conocimiento no sea el paciente, identificar.", type));
-            
+
             //row 8
             table = new PdfPTable(2);
             table.setWidthPercentage(100);
@@ -300,7 +347,7 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             table.addCell(cellRow1);
-            table.addCell(cellRow2);            
+            table.addCell(cellRow2);
             p1 = new Paragraph(space, "N° Teléfono Celular:", type);
             p2 = new Paragraph(space, "Dirección correo electrónico (e-mail):", type);
             cellRow1 = new PdfPCell(p1);
@@ -308,10 +355,9 @@ public class ConcentForm extends HttpServlet {
             formatCellBorder(cellRow1, 20);
             formatCellBorder(cellRow2, 20);
             table.addCell(cellRow1);
-            table.addCell(cellRow2); 
+            table.addCell(cellRow2);
             document.add(table);
-            
-            
+
             document.close();
         } catch (DocumentException de) {
             throw new IOException(de.getMessage());
