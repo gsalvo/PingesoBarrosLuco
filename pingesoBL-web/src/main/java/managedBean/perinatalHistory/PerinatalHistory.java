@@ -63,6 +63,8 @@ public class PerinatalHistory {
     String[] familyHistory;
     String aux = "";
     String aux2 = "";
+    String aux3 = "";
+    String aux4 = "";
     String[] personalHistory;
     String reasonAbortion = "";
     String[] bornCheck;
@@ -242,6 +244,38 @@ public class PerinatalHistory {
                 //familyHistory = aux.split(","); 
             }
             personalHistory = aux2.split(",");
+            
+            if(foundAntecedentes.getNombreAntecedente().equals("Ninguno o más de 3 partos")){
+                aux3 += olderAntmedidos.get(x).getValor() + ",";
+                //familyHistory = aux.split(","); 
+            }
+            if(foundAntecedentes.getNombreAntecedente().equals("Algún RN menor de 2500 gr")){
+                aux3 += olderAntmedidos.get(x).getValor() + ",";
+                //familyHistory = aux.split(","); 
+            }
+            if(foundAntecedentes.getNombreAntecedente().equals("Gemelar")){
+                aux3 += olderAntmedidos.get(x).getValor();
+                //familyHistory = aux.split(","); 
+            }
+            bornCheck = aux3.split(",");
+            
+            if(foundAntecedentes.getNombreAntecedente().equals("Eco precoz")){
+                aux4 += olderAntmedidos.get(x).getValor() + ",";
+                //familyHistory = aux.split(","); 
+            }
+            if(foundAntecedentes.getNombreAntecedente().equals("Paciente")){
+                aux4 += olderAntmedidos.get(x).getValor() + ",";
+                //familyHistory = aux.split(","); 
+            }
+            if(foundAntecedentes.getNombreAntecedente().equals("Hipertensión")){
+                aux4 += olderAntmedidos.get(x).getValor() + ",";
+                //familyHistory = aux.split(","); 
+            }
+            if(foundAntecedentes.getNombreAntecedente().equals("Clínica")){
+                aux4 += olderAntmedidos.get(x).getValor() + ",";
+                //familyHistory = aux.split(","); 
+            }
+            estimated = aux4.split(",");
         }
 
     }
@@ -356,7 +390,7 @@ public class PerinatalHistory {
             newAntmedido.setIdAntmedidos(null);
             newAntmedido.setEpisodioid(searchEpisode.get(0));
             newAntmedido.setIdAntecedente(searchAntecedente.get(0));
-            newAntmedido.setValor("Seleccionado");
+            newAntmedido.setValor(bornCheck[i]);
             newAntmedido.setFecha(fecha);
 
             listAntMedidos.add(newAntmedido);
@@ -531,7 +565,7 @@ public class PerinatalHistory {
             newAntmedido.setIdAntmedidos(null);
             newAntmedido.setEpisodioid(searchEpisode.get(0));
             newAntmedido.setIdAntecedente(searchAntecedente.get(0));
-            newAntmedido.setValor("Seleccionado");
+            newAntmedido.setValor(estimated[i]);
             newAntmedido.setFecha(fecha);
 
             listAntMedidos.add(newAntmedido);
