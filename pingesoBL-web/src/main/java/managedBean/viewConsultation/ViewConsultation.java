@@ -15,9 +15,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import managedBean.consultation.DiagnosesPathology;
+import managedBean.consultation.NewConsultation;
 import org.primefaces.context.RequestContext;
 import sessionbeans.DiagnosticoFacadeLocal;
 import sessionbeans.PacienteFacadeLocal;
@@ -31,7 +33,6 @@ import sessionbeans.PersonaFacadeLocal;
 @ManagedBean
 @ViewScoped
 public class ViewConsultation {
-
     @EJB
     private DiagnosticoFacadeLocal diagnosisFacade;
     @EJB
@@ -39,6 +40,9 @@ public class ViewConsultation {
     @EJB
     private PacienteFacadeLocal patientFacade;
 
+    @ManagedProperty("#{newConsultation}")
+    private NewConsultation newConsultation;
+    
     private String rut;
     private Integer Rut = 6972769;
     private String nombre;
@@ -99,22 +103,27 @@ public class ViewConsultation {
     }
 
     public void completeData() {
-        if (selectedConsultation != null) {
-            consultationReason = selectedConsultation.getMotivoConsulta();
-            consultationNotes = selectedConsultation.getNotas();
-            physicalExamination = selectedConsultation.getExploracionFisica();
-            diagnosisHipothesis = selectedConsultation.getHdiagnostica();
-            pertinence = selectedConsultation.getPertinencia();
-            diagnosis = diagnosisFacade.searchByConsultation(selectedConsultation);
-            consultationCanceled = selectedConsultation.getCancelada();
-            consultationPaused = selectedConsultation.getPausada();
-            for (Diagnostico diag : diagnosis) {
-                diagPathList.add(new DiagnosesPathology(diag.getDiagnosticofecha(), diag.getDiagnosticoges(), diag.getDiagnosticoestado(), diag.getPatologiaid().getPatologiaid(), diag.getPatologiaid().getPatologianombre(), diag.getPatologiaid().getPatologiages()));
+        consultationPaused = selectedConsultation.getPausada();
+        if (consultationPaused) {
+            newConsultation.loadConsultation(selectedConsultation);
+            RequestContext.getCurrentInstance().execute("newConsultationDialog.show()");
+        } else {
+            if (selectedConsultation != null) {
+                consultationReason = selectedConsultation.getMotivoConsulta();
+                consultationNotes = selectedConsultation.getNotas();
+                physicalExamination = selectedConsultation.getExploracionFisica();
+                diagnosisHipothesis = selectedConsultation.getHdiagnostica();
+                pertinence = selectedConsultation.getPertinencia();
+                diagnosis = diagnosisFacade.searchByConsultation(selectedConsultation);
+                consultationCanceled = selectedConsultation.getCancelada();
+                for (Diagnostico diag : diagnosis) {
+                    diagPathList.add(new DiagnosesPathology(diag.getDiagnosticofecha(), diag.getDiagnosticoges(), diag.getDiagnosticoestado(), diag.getPatologiaid().getPatologiaid(), diag.getPatologiaid().getPatologianombre(), diag.getPatologiaid().getPatologiages()));
+                }
+                RequestContext.getCurrentInstance().execute("viewConsultationWV.show()");
+            } else {
+                FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar una consulta", "");
+                FacesContext.getCurrentInstance().addMessage("", fm);
             }
-            RequestContext.getCurrentInstance().execute("viewConsultationWV.show()");
-        }else{
-            FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar una consulta", "");
-            FacesContext.getCurrentInstance().addMessage("", fm);
         }
     }
 
@@ -222,4 +231,14 @@ public class ViewConsultation {
         this.consultationPaused = consultationPaused;
     }
 
+    public NewConsultation getNewConsultation() {
+        return newConsultation;
+    }
+
+    public void setNewConsultation(NewConsultation newConsultation) {
+        this.newConsultation = newConsultation;
+    }
+
+    
+    
 }

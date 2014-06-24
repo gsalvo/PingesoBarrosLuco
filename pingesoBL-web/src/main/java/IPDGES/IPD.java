@@ -216,7 +216,7 @@ public class IPD extends HttpServlet {
             cellRow1.setBorderWidthRight(1);
             cellRow1.setBorderWidthBottom(1);
             table.addCell(cellRow1);
-            p1 = new Paragraph(space, "Historia clínica: " + clinicalHistory, type);
+            p1 = new Paragraph("Historia clínica: " + clinicalHistory, type);
             cellRow1 = new PdfPCell(p1);
             cellRow1.setColspan(2);
             formatCellBorder(cellRow1, 20);
@@ -255,117 +255,75 @@ public class IPD extends HttpServlet {
             document.add(new Paragraph("\n"));
             
             //row 5
-             table = new PdfPTable(2);
-            table.setWidthPercentage(100);
+//           
             p1 = new Paragraph(space, "Datos Clínicos", subTitle);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthTop(1);
-            cellRow1.setBorderWidthBottom(1);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+
             p1 = new Paragraph(space, "* Sólo para caso AUGE", subTitle2);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+
             p1 = new Paragraph(space, "Problema de salud AUGE:", typeBold);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
-            p1 = new Paragraph(space, augeProblem, type);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+
+            p1 = new Paragraph(augeProblem, type);
+            p1.setAlignment(Element.ALIGN_JUSTIFIED);
+            document.add(p1);
+
+            p1 = new Paragraph("", type);
+            document.add(p1);
             if(isGes){
-                p1 = new Paragraph(space, "¿Confirma que el diagnóstico pertenece al sistema AUGE? " + "(X)SI ()NO", type);
+                p1 = new Paragraph(space, "¿Confirma que el diagnóstico pertenece al sistema AUGE? " + "(X)SI ()NO", typeBold);
             }else{
-                p1 = new Paragraph(space, "¿Confirma que el diagnóstico pertenece al sistema AUGE? " + "()SI (X)NO", type);                
+                p1 = new Paragraph(space, "¿Confirma que el diagnóstico pertenece al sistema AUGE? " + "()SI (X)NO", typeBold);                
             }
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+            p1 = new Paragraph(" ");
+            document.add(p1);
+
+            p1 = new Paragraph(" ");
+            document.add(p1);
             p1 = new Paragraph(space, "SubProblema Auge:", typeBold);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
-            p1 = new Paragraph(space, augeSubProblem, type);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            cellRow1.setBorderWidthBottom(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+
+            p1 = new Paragraph(augeSubProblem, type);
+            p1.setAlignment(Element.ALIGN_JUSTIFIED);
+            document.add(p1);
+
+            p1 = new Paragraph(" ");
+            document.add(p1);
             p1 = new Paragraph(space, "Diagnóstico:", typeBold);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
-            p1 = new Paragraph(space, diagnosis, type);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+
+            p1 = new Paragraph(diagnosis, type);
+            p1.setAlignment(Element.ALIGN_JUSTIFIED);
+            document.add(p1);
+
+            p1 = new Paragraph(" ");
+            document.add(p1);
             p1 = new Paragraph(space, "Fundamentos de diagnóstico:", typeBold);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
-            p1 = new Paragraph(space, diagnosticBasics, type);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
+            document.add(p1);
+
+            p1 = new Paragraph(diagnosticBasics, type);
+            p1.setAlignment(Element.ALIGN_JUSTIFIED);
+            document.add(p1);
+
+            p1 = new Paragraph(" ");
+            document.add(p1);
             p1 = new Paragraph(space, "Tratamiento e Indicaciones:", typeBold);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
-            p1 = new Paragraph(space, treatment, type);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            table.addCell(cellRow1);
-            p1 = new Paragraph(space, "El tratamiento deberá iniciarse a más tardar el: " + dfDateInstance.format(deadline), type);
-            cellRow1 = new PdfPCell(p1);
-            cellRow1.setColspan(2);
-            formatCellBorder(cellRow1, 20);
-            cellRow1.setBorderWidthLeft(1);
-            cellRow1.setBorderWidthRight(1);
-            cellRow1.setBorderWidthBottom(1);
-            table.addCell(cellRow1);
-            document.add(table);
-            document.add(new Paragraph("\n"));
-            //row: 6
+            document.add(p1);
+
+            p1 = new Paragraph(treatment, type);
+            p1.setAlignment(Element.ALIGN_JUSTIFIED);
+            document.add(p1);
+
+            p1 = new Paragraph(" ");
+            document.add(p1);
+            p1 = new Paragraph(space, "El tratamiento deberá iniciarse a más tardar el: " + dfDateInstance.format(deadline), typeBold);
+            document.add(p1);
+
+            document.add(new Paragraph(" "));
+            
+//row: 6
             table = new PdfPTable(2);
             table.setWidthPercentage(100);
             p1 = new Paragraph(space, "Datos del Profesional", subTitle);
@@ -377,15 +335,15 @@ public class IPD extends HttpServlet {
             cellRow1.setBorderWidthRight(1);
             cellRow1.setBorderWidthBottom(1);
             table.addCell(cellRow1);
-            p1 = new Paragraph(space, "Nombre: " + professionalName, type);
+            p1 = new Paragraph( "Nombre: " + professionalName, type);
             cellRow1 = new PdfPCell(p1);
             cellRow1.setColspan(2);
             formatCellBorder(cellRow1, 20);
             cellRow1.setBorderWidthLeft(1);
             cellRow1.setBorderWidthRight(1);
             table.addCell(cellRow1);
-            p1 = new Paragraph(space, "Rut: " + professionalRut, type);
-            p2 = new Paragraph(space, "Firma del médico", type);
+            p1 = new Paragraph( "Rut: " + professionalRut, type);
+            p2 = new Paragraph("Firma del médico", type);
             cellRow1 = new PdfPCell(p1);
             cellRow2 = new PdfPCell(p2);
             formatCellBorder(cellRow1, 20);
@@ -398,7 +356,7 @@ public class IPD extends HttpServlet {
             table.addCell(cellRow2);
             table.addCell(cellRow1);
             document.add(table);
-            document.add(new Paragraph("\n"));
+            document.add(new Paragraph("\n")); 
             document.close();
         } catch (DocumentException de) {
             throw new IOException(de.getMessage());
