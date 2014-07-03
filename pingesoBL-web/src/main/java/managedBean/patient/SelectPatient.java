@@ -35,18 +35,13 @@ public class SelectPatient {
     
     private List<Paciente> patients;
     
-    private Integer rut = 6972769;
+    private Integer rut;
     /**
      * Creates a new instance of patient
      */
     public SelectPatient() {
     }
-    
-    public void start(){
-        System.out.println(rut);
-        episodesBean.startEpisodes(rut);
-    }
-    
+        
     public List<String> completeTextPatient(String query) {
         patients = patientFacade.findAll();
         List<String> results = new ArrayList<String>();
@@ -54,7 +49,6 @@ public class SelectPatient {
         for(Paciente patient: patients){
             if(patient.getPersona().getPersRut().toString().startsWith(query)){
                 results.add(patient.getPersona().getPersRut().toString());
-                rut = patient.getPersona().getPersRut();
             }
         }
         

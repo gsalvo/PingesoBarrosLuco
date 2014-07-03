@@ -56,7 +56,7 @@ public class AddVitalSigns {
     private List<RegistroClinico> searchClinicalRecord;
 
     private Integer PersonId;
-    private Integer rut;
+    private Integer rut = 6972769;
 
     private List<Muesta> createSamples = new ArrayList<Muesta>();
     private List<Muesta> createSamplesAlways = new ArrayList<Muesta>();

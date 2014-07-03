@@ -14,6 +14,7 @@ import entities.Persona;
 import entities.RegistroClinico;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -47,18 +48,33 @@ public class GeneralHistory {
     @EJB
     private PersonaFacadeLocal personFacade;
     
-    private Integer rut;
+    private Integer rut = 6972769;
     private String antecedentes;
     private Antmedidos newAntmedido;
     private List<Antecedentes> searchAntecedente;
+    private List<Antmedidos> searchAmedidos;
     private int personId;
     private List<Paciente> searchPatient;
     private Paciente patient;
     private List<RegistroClinico> searchClinicalRecord;
     private List<Episodios> searchEpisode;
+    private Integer idGeneral;
     
     public GeneralHistory() {
         
+    }
+    
+    @PostConstruct
+    public void init(){
+        idGeneral = antecedentesFacade.searchByName("Generales").get(0).getIdAntecedente();
+        searchAmedidos = antmedidosFacade.findAll();
+        if(!searchAmedidos.isEmpty()){
+            for(Antmedidos antmed: searchAmedidos){
+                if(antmed.getIdAntecedente().getIdAntecedente().equals(idGeneral)){
+                    antecedentes = antmed.getValor();
+                }
+            }
+        }
     }
     
     public void start(Integer rut){
@@ -75,12 +91,13 @@ public class GeneralHistory {
             searchEpisode = episodeFacade.searchByClinicalRegister(searchClinicalRecord.get(0));
 
             newAntmedido = new Antmedidos();
-            searchAntecedente = antecedentesFacade.searchByName("generales");
+            searchAntecedente = antecedentesFacade.searchByName("Generales");
             newAntmedido.setIdAntmedidos(null);
             newAntmedido.setEpisodioid(searchEpisode.get(0));
             newAntmedido.setIdAntecedente(searchAntecedente.get(0));
             newAntmedido.setValor(antecedentes);
             newAntmedido.setFecha(fecha);
+            newAntmedido.setGrupo(0);
             antmedidosFacade.create(newAntmedido);
             
             FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, "Antecedentes guardados.", "");
