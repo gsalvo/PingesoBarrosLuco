@@ -39,7 +39,6 @@ public class viewVitalSigns {
     private List<Paciente> searchPaciente;
     private List<Muesta> searchSamples;
     private Integer PersonId;
-    private String PersonRut = "69727697";
     private Integer Rut = 6972769;
     private Integer personID;
     private int samplesId;
@@ -50,25 +49,41 @@ public class viewVitalSigns {
     public void init() {
         PersonId = personFacade.findByRut(Rut);
         searchPaciente = patientFacade.searchByPerson(PersonId);
-        //Date fecha = new Date(1990, 17, 9);
         boolean exist = false;
         int maxGroup = 0;
-        /*for (Muesta searchSample : searchSamples) {
-         for (Integer group : groups) {
-         if (group == searchSample.getGrupo()) {
-         exist = true;
-         }
-         }
-         if (exist == false) {
-         groups.add(searchSample.getGrupo());
-         String dateAux = searchSample.getFecha().toString();
-         dateGroup.add(new DateGroup(searchSample.getGrupo(), dateAux));
-         }
-         exist = false;
-         maxGroup = searchSample.getGrupo();
-         }
-         searchSamples = muestaFacade.searchByPatientGroup(searchPaciente.get(0), maxGroup);*/
-
+        searchSamples = muestaFacade.searchByPatient(searchPaciente.get(0));
+        for (Muesta searchSample : searchSamples) {
+            for (Integer group : groups) {
+                if (group == searchSample.getGrupo()) {
+                    exist = true;
+                }
+            }
+            if (exist == false) {
+                groups.add(searchSample.getGrupo());
+                String dateAux = searchSample.getFecha().toString();
+                dateGroup.add(new DateGroup(searchSample.getGrupo(), dateAux));
+            }
+            exist = false;
+            maxGroup = searchSample.getGrupo();
+        }
+        searchSamples = muestaFacade.searchByPatientGroup(searchPaciente.get(0), maxGroup);
+        if (searchSamples.size() > 0) {
+            long dateSample = searchSamples.get(0).getFecha().getTime();
+            long today = (new Date()).getTime();
+            long diference = today - dateSample;
+            double diferenceDay = Math.floor(diference / (1000 * 60 * 60 * 24));
+            if (diferenceDay >= 1) {
+                searchSamples = null;
+            }
+        }
+    }
+    
+    public void start(Integer rut){
+        this.Rut = rut;
+        PersonId = personFacade.findByRut(Rut);
+        searchPaciente = patientFacade.searchByPerson(PersonId);
+        boolean exist = false;
+        int maxGroup = 0;
         searchSamples = muestaFacade.searchByPatient(searchPaciente.get(0));
         for (Muesta searchSample : searchSamples) {
             for (Integer group : groups) {

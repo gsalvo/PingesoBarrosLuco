@@ -100,12 +100,12 @@
                                     <br/>
                                     <h:panelGrid columns="6" cellpadding="5">
                                         <h:outputLabel  value="R.U.N paciente: "/>
-                                        <p:outputLabel  id="outRun" value="#{pacienteMb.txt}"/>
+                                        <p:outputLabel  id="outRun" value="#{newConsultation.rut}"/>
 
                                         <h:outputLabel  value="Nombre paciente: "/>
-                                        <p:outputLabel id="outNombre" value="#{pacienteMb.nombrePac}"/>
+                                        <p:outputLabel id="outNombre" value="#{newConsultation.name}"/>
                                         <h:outputLabel  value="N° ficha: "/>
-                                        <p:outputLabel id="outFicha" value="#{pacienteMb.ficha}"/>
+                                        <p:outputLabel id="outFicha" value="12"/>
                                         <p:outputLabel for="date" value="Fecha de citación: " />
                                         <p:inputMask id="date" value="#{glicemia.fechaC}" mask="99/99/9999"/>
                                     </h:panelGrid>
@@ -161,12 +161,12 @@
                                             <br/>
                                             <h:panelGrid columns="4" cellpadding="4">
                                                 <h:outputLabel  value="R.U.N: "/>
-                                                <p:outputLabel  id="outRun" value="#{pacienteMb.txt}"/>
+                                                <p:outputLabel  id="outRun" value="#{newConsultation.rut}"/>
 
                                                 <h:outputLabel  value="Nombre: "/>
-                                                <p:outputLabel id="outNombre" value="#{pacienteMb.nombrePac}"/>
+                                                <p:outputLabel id="outNombre" value="#{newConsultation.name}"/>
                                                 <h:outputLabel  value="N° ficha: "/>
-                                                <p:outputLabel id="outFicha" value="#{pacienteMb.ficha}"/>
+                                                <p:outputLabel id="outFicha" value="12"/>
                                                 <h:outputLabel  value="Fecha de Citacion: "/>
                                                 <h:outputText value="#{glicemia.fecha}">
                                                     <f:convertDateTime pattern="dd/MM/yyyy" />

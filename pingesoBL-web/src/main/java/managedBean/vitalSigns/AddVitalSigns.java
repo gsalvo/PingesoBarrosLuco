@@ -56,8 +56,7 @@ public class AddVitalSigns {
     private List<RegistroClinico> searchClinicalRecord;
 
     private Integer PersonId;
-    private String PersonRut = "69727697";
-    private Integer Rut = 6972769;
+    private Integer rut = 6972769;
 
     private List<Muesta> createSamples = new ArrayList<Muesta>();
     private List<Muesta> createSamplesAlways = new ArrayList<Muesta>();
@@ -101,6 +100,10 @@ public class AddVitalSigns {
 
     private List<SignosVitales> controllerVitalSigns = new ArrayList<SignosVitales>();
 
+    public void start(Integer rut){
+        this.rut = rut;
+    }
+    
     public void returnUnit() {
         for (int i = 0; i < searchVitalSigns.size(); i++) {
 
@@ -193,7 +196,7 @@ public class AddVitalSigns {
     }
 
     public void createVitalSignsPatients() {
-        PersonId = personFacade.findByRut(Rut);
+        PersonId = personFacade.findByRut(rut);
         searchPatient = patientFacade.searchByPerson(PersonId);
         searchClinicalRecord = clinicalRecordFacade.searchByPaciente(searchPatient.get(0));
 
@@ -297,7 +300,7 @@ public class AddVitalSigns {
             FacesContext.getCurrentInstance().addMessage("", fm);
         } else {
             boolean exists = false;
-            PersonId = personFacade.findByRut(Rut);
+            PersonId = personFacade.findByRut(rut);
             searchPatient = patientFacade.searchByPerson(PersonId);
             selectedVitalSign = vitalSignsFacade.searchById(vitalSignsId);
             List<Muesta> allSamples = sampleFacade.searchByPatient(searchPatient.get(0));

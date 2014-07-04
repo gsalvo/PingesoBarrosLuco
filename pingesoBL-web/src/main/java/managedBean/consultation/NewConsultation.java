@@ -76,8 +76,7 @@ public class NewConsultation {
     private boolean pathologyGes;
 
     private int personId;
-    private String rut;
-    private Integer Rut = 6972769;
+    private Integer Rut;
     private String name;
     private List<Paciente> searchPatient;
     private List<RegistroClinico> searchClinicalRecord;
@@ -104,7 +103,37 @@ public class NewConsultation {
 
     @PostConstruct
     public void init() {
-        rut = "69727697";
+        Rut = 6972769;
+        personId = personFacade.findByRut(Rut);
+        searchPatient = patientFacade.searchByPerson(personId);
+        patient = searchPatient.get(0);
+        name = searchPatient.get(0).getPersona().getPersNombres() + " " + searchPatient.get(0).getPersona().getPersApepaterno()
+                + " " + searchPatient.get(0).getPersona().getPersApematerno();
+        searchClinicalRecord = clinicalRecordFacade.searchByPaciente(searchPatient.get(0));
+        searchEpisode = episodeFacade.searchByClinicalRegister(searchClinicalRecord.get(0));
+        episodeId = searchEpisode.get(0).getEpisodioid();
+        //<!--aqui-->
+        boolean exist = false;
+        int maxGroup = 0;
+        searchSamples = sampleFacade.searchByPatient(searchPatient.get(0));
+        for (int i = 0; i < searchSamples.size(); i++) {
+            for (int j = 0; j < groups.size(); j++) {
+                if (groups.get(j) == searchSamples.get(i).getGrupo()) {
+                    exist = true;
+                }
+            }
+            if (exist == false) {
+                groups.add(searchSamples.get(i).getGrupo());
+            }
+            exist = false;
+            maxGroup = searchSamples.get(i).getGrupo();
+        }
+        searchSamples = sampleFacade.searchByPatientGroup(searchPatient.get(0), maxGroup);
+        //<!--aqui-->
+    }
+    
+    public void start(Integer Rut){
+        this.Rut = Rut;
         personId = personFacade.findByRut(Rut);
         searchPatient = patientFacade.searchByPerson(personId);
         patient = searchPatient.get(0);
@@ -468,6 +497,7 @@ public class NewConsultation {
         physicalExamination = "";
         pertinence = false;
         isGes = false;
+        disableEnd = true;
         consultationState = "";
         resetDiagnostic();
     }
@@ -508,12 +538,12 @@ public class NewConsultation {
         this.isGes = isGes;
     }
 
-    public String getRut() {
-        return rut;
+    public Integer getRut() {
+        return Rut;
     }
 
-    public void setRut(String rut) {
-        this.rut = rut;
+    public void setRut(Integer rut) {
+        this.Rut = rut;
     }
 
     public String getName() {

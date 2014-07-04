@@ -22,12 +22,12 @@
                     <p:outputLabel value="#{index.doctorName} " id="doctorName" style="font-weight: bold" />
                     <p:commandButton type="button" onclick="toggleFullscreen(document.documentElement)" icon="ui-icon-extlink" />
                 </f:facet>
-                <p:menuitem value="Episodios clínicos" onclick="episodesDialog.show()" styleClass="open" icon="ui-icon ui-icon-document"></p:menuitem>
+                <p:menuitem value="Episodios clínicos" onclick="selectPatientDialog.show()" styleClass="open" icon="ui-icon ui-icon-document"></p:menuitem>
             </p:menubar>
         </h:form>
 
         <!-- Episodios - ID: 1 -->
-        <p:dialog header="Episodios" id="idDialogEpisodes" widgetVar="episodesDialog" minimizable="true">
+        <p:dialog header="Episodios" id="idDialogEpisodes" widgetVar="episodesDialog" minimizable="true" closable="true">
             <!--<ui:insert name="episodios"/>-->
             <p:ajax event="close" listener="#{episodes.resetEpisodes()}" update=":episodesForm"/>
             <p:growl id="episodesValidator"/>
@@ -84,7 +84,7 @@
                             <h:outputText value="#{consultation.pausada ? 'Pausada':'Finalizada'}" />
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton icon="ui-icon-plusthick" value="Nueva Consulta" onclick="newConsultationDialog.show()"/>
+                            <p:commandButton icon="ui-icon-plusthick" value="Nueva Consulta" actionListener="#{newConsultation.start(episodes.rut)}" onclick="newConsultationDialog.show()"/>
                             <p:commandButton icon="ui-icon-search" value="Ver Consulta" actionListener="#{viewConsultation.completeData()}" update=":newConsultationForm :viewConsultationForm :viewEpisodeValidation" />                               
                         </f:facet> 
                     </p:dataTable>
@@ -101,19 +101,14 @@
                         <h:form id="menuConsultationForm">
                             <p:menubar id="consultationMenu">
                                 <p:menuitem value="Datos del Paciente" icon="ui-icon-person" onclick="patientDataDialog.show()" url="#"/>
-                                <p:menuitem value="Ingresar signos vitales" onclick="newVitalSignsDialog.show()" icon="ui-icon-plusthick" url="#"/>
+                                <p:menuitem value="Ingresar signos vitales" actionListener="#{addVitalSigns.start(episodes.rut)}" onclick="newVitalSignsDialog.show()" icon="ui-icon-plusthick" url="#"/>
                                 <p:submenu label="Antecedentes">
-                                    <p:menuitem value="Generales" onclick="dialogGeneralHistory.show()" icon="ui-icon-document" url="#"/>
-                                    <p:menuitem value="Perinatales" onclick="dialogPerinatalHistory.show()" icon="ui-icon-document" url="#"/>
+                                    <p:menuitem value="Generales" actionListener="#{generalHistory.start(episodes.rut)}" onclick="dialogGeneralHistory.show()" icon="ui-icon-document" url="#"/>
+                                    <p:menuitem value="Perinatales" actionListener="#{perinatalHistory.start(episodes.rut)}" onclick="dialogPerinatalHistory.show()" icon="ui-icon-document" url="#"/>
                                 </p:submenu>
                                 <p:submenu label="Formulario GES" rendered="#{newConsultation.isGes}">
                                     <p:menuitem value="Informe de proceso de diagnóstico" onclick="newIPDDialog.show()" url="#" />
-                                    <p:menuitem value="Formulario de consentimiento de información" url="#" disabled="true"/>
-                                </p:submenu>
-                                <p:submenu label="Ver" >
-                                    <p:menuitem value="Consultas Anteriores" url="#"/>
-                                    <p:menuitem value="Diagnósticos"  url="#"/>
-                                    <p:menuitem value="Signos vitales"  url="#"/>
+                                    <p:menuitem value="Formulario de consentimiento de información" onclick="window.open('concentForm?rut=#{episodes.rut}')"  url="#"/>
                                 </p:submenu>
                             </p:menubar>
                         </h:form>
@@ -233,44 +228,45 @@
                                     </h:panelGrid>
                                 </p:tab>
                                 <p:tab title="Tratamiento">
-                                <h:panelGrid width="100%" columns="3" cellpadding="5">
-                                    <p:dataList value="#{medicamentosMb.receta1}" var="rece" type="ordered" >
-                                        <f:facet name="header">
-                                            Receta
-                                        </f:facet>
-                                        #{rece}
-                                    </p:dataList>
-                                    <p:dataList  value="#{medicamentosMb.examen}" var="ex" type="ordered">
-                                        <f:facet name="header">
-                                            Examenes
-                                        </f:facet>
-                                        #{ex}
-                                    </p:dataList>
-                                    <p:dataList  value="#{medicamentosMb.otros}" var="otro" type="ordered">
-                                        <f:facet name="header">
-                                            Otros
-                                        </f:facet>
-                                        #{otro}
-                                    </p:dataList>
-                                    <p:splitButton value="Recetas" >
-                                        <p:menuitem value="Interna" url="javascript:new_window('views/RecetaInterna.xhtml')"/>
-                                        <p:menuitem value="Externa" url="javascript:new_window('views/RecetaExterna.xhtml')" />
-                                    </p:splitButton>
-                                    <p:splitButton value="Examenes" >
-                                        <p:menuitem value="Glicemia" url="javascript:new_window('views/ExGlicemia.xhtml')"/>
-                                        <p:menuitem value="Elisa"  url="javascript:new_window('views/ExElisa.xhtml')"/>
-                                        <p:menuitem value="Laboratorio" url="javascript:new_window('views/ExLaboratorio.xhtml')" />
-                                        <p:menuitem value="Microbiologico" url="javascript:new_window('views/ExMicrobiologico.xhtml')" />
-                                        <p:menuitem value="Radiologico" url="javascript:new_window('views/ExRadiologico.xhtml')" />
-                                        <p:menuitem value="Electrocardiograma" url="javascript:new_window('views/ExElectroCG.xhtml')" />
-                                    </p:splitButton>
-                                    <p:splitButton value="Derivaciones"  >
-                                        <p:menuitem value="Interconsulta" url="javascript:new_window('views/Interconsulta.xhtml')" />
-                                        <p:menuitem value="Contrareferencia" url="javascript:new_window('views/ContraRef.xhtml')" />
-                                    </p:splitButton>
-                                    <p:commandButton icon="ui-icon-arrowrefresh-1-w" update=":newConsultationForm"/>
-                                </h:panelGrid>
-                            </p:tab>
+                                    <h:panelGrid width="100%" columns="3" cellpadding="5">
+                                        <p:dataList value="#{medicamentosMb.receta1}" var="rece" type="ordered" >
+                                            <f:facet name="header">
+                                                Receta
+                                            </f:facet>
+                                            #{rece}
+                                        </p:dataList>
+                                        <p:dataList  value="#{medicamentosMb.examen}" var="ex" type="ordered">
+                                            <f:facet name="header">
+                                                Examenes
+                                            </f:facet>
+                                            #{ex}
+                                        </p:dataList>
+                                        <p:dataList  value="#{medicamentosMb.otros}" var="otro" type="ordered">
+                                            <f:facet name="header">
+                                                Otros
+                                            </f:facet>
+                                            #{otro}
+                                        </p:dataList>
+                                        <p:splitButton value="Recetas" >
+                                            <p:menuitem value="Interna" url="javascript:new_window('views/RecetaInterna.xhtml')"/>
+                                            <p:menuitem value="Externa" url="javascript:new_window('views/RecetaExterna.xhtml')" />
+                                        </p:splitButton>
+                                        <p:splitButton value="Examenes" >
+                                            <p:menuitem value="Glicemia" url="javascript:new_window('views/ExGlicemia.xhtml')"/>
+                                            <p:menuitem value="Elisa"  url="javascript:new_window('views/ExElisa.xhtml')"/>
+                                            <p:menuitem value="Laboratorio" url="javascript:new_window('views/ExLaboratorio.xhtml')" />
+                                            <p:menuitem value="Microbiologico" url="javascript:new_window('views/ExMicrobiologico.xhtml')" />
+                                            <p:menuitem value="Radiologico" url="javascript:new_window('views/ExRadiologico.xhtml')" />
+                                            <p:menuitem value="Electrocardiograma" url="javascript:new_window('views/ExElectroCG.xhtml')" />
+                                            <p:menuitem value="TNS" url="javascript:new_window('views/ExTns.xhtml')" />
+                                        </p:splitButton>
+                                        <p:splitButton value="Derivaciones"  >
+                                            <p:menuitem value="Interconsulta" url="javascript:new_window('views/Interconsulta.xhtml')" />
+                                            <p:menuitem value="Contrareferencia" url="javascript:new_window('views/ContraRef.xhtml')" />
+                                        </p:splitButton>
+                                        <p:commandButton icon="ui-icon-arrowrefresh-1-w" update=":newConsultationForm"/>
+                                    </h:panelGrid>
+                                </p:tab>
                             </p:tabView>
                         </p:column>
                     </p:row>
@@ -285,7 +281,7 @@
                     <p:row>
                         <p:column colspan="2">
                             <p:commandButton value="Finalizar Consulta" icon="ui-icon-disk" onclick="dialogEndConsultation.show()"/>
-                            <p:commandButton value="Guardar Datos" icon="ui-icon-pause" actionListener="#{newConsultation.addConsultation('pausada')}" update=":newConsultationForm :newDiagnosticForm :endConsultationForm"/>
+                            <p:commandButton value="Guardar Datos" icon="ui-icon-pause" actionListener="#{newConsultation.addConsultation('pausada')}" update=":newConsultationForm :newDiagnosticForm :endConsultationForm :menuConsultationForm"/>
                             <p:commandButton value="Cancelar" icon="ui-icon-cancel" onclick="cancelConsultationDialog.show()">
                                 <f:setPropertyActionListener target="#{newConsultation.consultationState}" value="cancelada"/>
                             </p:commandButton>
@@ -336,7 +332,7 @@
                     <p:inputTextarea id="cause" value="#{newConsultation.canceledReason}" cols="50" rows="4" autoResize="false"/>
                 </p:panelGrid>
                 <p:panelGrid columns="2" styleClass="panelGridForm">
-                    <p:commandButton id="yes" value="Sí" icon="ui-icon-check" actionListener="#{newConsultation.addConsultation()}" update=":newConsultationForm :newDiagnosticForm :viewEpisodesForm :cancelConsultationForm :endConsultationForm"/>
+                    <p:commandButton id="yes" value="Sí" icon="ui-icon-check" actionListener="#{newConsultation.addConsultation()}" update=":newConsultationForm :newDiagnosticForm :viewEpisodesForm :cancelConsultationForm:cause :endConsultationForm :menuConsultationForm"/>
                     <p:commandButton id="No" value="No" icon="ui-icon-closethick" actionListener="#{newConsultation.resetCancel()}" onclick="cancelConsultationDialog.hide()"/>
                 </p:panelGrid>
             </h:form>
@@ -769,7 +765,7 @@
                     <p:row>
                         <p:column>
                             <p:commandButton value="Aplicar" icon="ui-icon-check" actionListener="#{newConsultation.selectEnable()}" update=":endConsultationForm:finalizarEnd"/>
-                            <p:commandButton id="finalizarEnd" value="Finalizar" icon="ui-icon-disk" actionListener="#{newConsultation.addConsultation()}" update=":newConsultationForm :newDiagnosticForm :viewEpisodesForm :endConsultationForm" disabled="#{newConsultation.disableEnd}"/>
+                            <p:commandButton id="finalizarEnd" value="Finalizar" icon="ui-icon-disk" actionListener="#{newConsultation.addConsultation()}" update=":newConsultationForm :newDiagnosticForm :viewEpisodesForm :endConsultationForm :menuConsultationForm" disabled="#{newConsultation.disableEnd}"/>
                             <p:commandButton value="Cancelar" icon="ui-icon-cancel" onclick="dialogEndConsultation.hide()"/>
                         </p:column>
                     </p:row>
@@ -779,6 +775,7 @@
 
         <!-- Antecedentes perinatalas - ID: 14 -->
         <p:dialog header="Antecedentes Perinatales" id="perinatalHistory" widgetVar="dialogPerinatalHistory" minimizable="true">
+            <p:growl id="perinatalValidation"/>
             <h:form id="perinatalHistoryForm">
                 <p:tabView>
                     <p:tab title="Antecedentes">  
@@ -1133,7 +1130,7 @@
                     </p:tab>                
                 </p:tabView>
                 <p:panelGrid columns="2" styleClass="panelGridForm">                    
-                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{perinatalHistory.save}"/>
+                    <p:commandButton value="Guardar" icon="ui-icon-disk" actionListener="#{perinatalHistory.save}" update=":perinatalValidation"/>
                     <p:commandButton value="Cancelar" icon="ui-icon-cancel" onclick="dialogPerinatalHistory.hide()"/>
                 </p:panelGrid>
             </h:form>
@@ -1157,10 +1154,21 @@
                 </p:panelGrid>
             </h:form>
         </p:dialog>
-    <script language="JavaScript" type="text/javascript">
-        function new_window(url){
-            link = window.open(url,"Link","toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=yes,resizable=0");
-        }
-    </script>
+
+        <!-- Elegir paciente -->
+        <p:dialog header="Seleccionar paciente" id="selectPatient" widgetVar="selectPatientDialog" minimizable="true">
+            <h:form id="selectPatientForm">
+                <p:autoComplete id="patientAutocomplete" placeholder="Rut Paciente" value="#{selectPatient.rut}" completeMethod="#{selectPatient.completeTextPatient}"/>
+                <p:commandButton value="Seleccionar" actionListener="#{episodes.startEpisodes(selectPatient.rut)}" oncomplete="episodesDialog.show()" update=":episodesForm"/>
+            </h:form>
+        </p:dialog>
+
+
+
+        <script language="JavaScript" type="text/javascript">
+            function new_window(url) {
+                link = window.open(url, "Link", "toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=yes,resizable=0");
+            }
+        </script>
     </h:body>
 </html>

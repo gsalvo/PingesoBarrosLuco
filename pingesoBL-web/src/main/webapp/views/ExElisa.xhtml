@@ -109,22 +109,7 @@
 
 
 
-                            <p:panel id="buscador" styleClass="noPrintBlock" style="width: 100%;text-align: center">
-                                <div  align="center">
-                                    <h:panelGrid columns="3" cellpadding="5">
-
-                                        <h:outputLabel  value="R.U.N paciente: "/>
-                                        <p:autoComplete  id="acSimple" value="#{recetaIntMb.busca}"
-                                                         completeMethod="#{recetaIntMb.complete}" size="35" placeholder="Ingrese RUN...">
-
-                                        </p:autoComplete>
-
-                                        <p:commandButton action="#{recetaIntMb.botonAct()}" update="outRun,outNombre,outEdad,
-                                                         outSexo,outDomicilio,outFecha,outEstablecimiento,outServicio,outSala,
-                                                         outFicha,messages" id="iconSearch"  icon="ui-icon-search" title="Icon Search" />
-                                    </h:panelGrid>
-                                </div>
-                            </p:panel>
+                            
 
                             <p:panel id="datosTodos" style="width: 100%;text-align: center">
 
@@ -134,19 +119,19 @@
                                     <p:panelGrid columns="4" style="width: 100%;text-align: left">
 
                                         <h:outputLabel  style="font-weight: bold" value="R.U.N paciente: "/>
-                                        <p:outputLabel  id="outRun" value="#{recetaIntMb.txt}"/>
+                                        <p:outputLabel  id="outRun" value="#{newConsultation.rut}"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="Nombre paciente: "/>
-                                        <p:outputLabel id="outNombre" value="#{recetaIntMb.nombre}"/>
+                                        <p:outputLabel id="outNombre" value="#{newConsultation.name}"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="Fecha de nacimiento: "/>
-                                        <p:outputLabel id="outEdad" value="#{recetaIntMb.edad}"/>
+                                        <p:outputLabel id="outEdad" value="20"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="Sexo: "/>
                                         <p:outputLabel id="outSexo" value="-"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="Domicilio: "/>
-                                        <p:outputLabel id="outDomicilio" value="#{recetaIntMb.domicilio}"/>
+                                        <p:outputLabel id="outDomicilio" value="calle 13"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="Establecimiento: "/>
                                         <p:outputLabel id="outEstablecimiento" value="-"/>
@@ -158,10 +143,10 @@
                                         <p:outputLabel id="outSala" value="-"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="N° ficha: "/>
-                                        <p:outputLabel id="outFicha" value="#{recetaIntMb.ficha}"/>
+                                        <p:outputLabel id="outFicha" value="12"/>
 
                                         <h:outputLabel  style="font-weight: bold" value="Fecha: "/>
-                                        <p:outputLabel id="outFecha" value="#{recetaIntMb.fecha}"/>
+                                        <p:outputLabel id="outFecha" value="12-12-2014"/>
 
                                     </p:panelGrid>
 

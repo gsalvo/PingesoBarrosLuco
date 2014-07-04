@@ -255,7 +255,7 @@
 
                                 <!--holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-->
                                 <div align="center">
-                                    <p:commandButton value="Validar" update="formul" icon="ui-icon-check"/>
+                                    <p:commandButton action="#{medicamentosMb.guardarInter()}" value="Validar" update="formul" icon="ui-icon-check"/>
                                     <p:commandButton value="Imprimir" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-print"/>
                                      </div>
                                 <p:dialog header="Values" modal="true" showEffect="clip" widgetVar="dlg" height="500" maximizable="true" resizable="false" closeOnEscape="true" draggable="false"  >
